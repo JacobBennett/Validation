@@ -20,5 +20,5 @@
             "Laracasts\\Validation": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
