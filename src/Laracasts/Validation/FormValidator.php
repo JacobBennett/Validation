@@ -35,13 +35,13 @@ abstract class FormValidator {
 	 * @return mixed
 	 * @throws FormValidationException
 	 */
-	public function validate($formData)
+	public function validate($formData, $context = null)
 	{
 		$formData = $this->normalizeFormData($formData);
 
 		$this->validation = $this->validator->make(
 			$formData,
-			$this->getValidationRules(),
+			$this->getValidationRules($context),
 			$this->getValidationMessages()
 		);
 
@@ -56,8 +56,10 @@ abstract class FormValidator {
 	/**
 	 * @return array
 	 */
-	public function getValidationRules()
+	public function getValidationRules($context = null)
 	{
+		if( ! is_null($context) && array_key_exists($context, $this->rules)) return $this->rules[$context];
+		
 		return $this->rules;
 	}
 
