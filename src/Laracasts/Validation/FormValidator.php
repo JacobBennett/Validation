@@ -6,6 +6,11 @@ use Laracasts\Validation\ValidatorInterface as ValidatorInstance;
 abstract class FormValidator {
 
 	/**
+	 * @var string
+	 */
+	protected $context;
+
+	/**
 	 * @var ValidatorFactory
 	 */
 	protected $validator;
@@ -35,13 +40,13 @@ abstract class FormValidator {
 	 * @return mixed
 	 * @throws FormValidationException
 	 */
-	public function validate($formData, $context = null)
+	public function validate($formData)
 	{
 		$formData = $this->normalizeFormData($formData);
 
 		$this->validation = $this->validator->make(
 			$formData,
-			$this->getValidationRules($context),
+			$this->getValidationRules(),
 			$this->getValidationMessages()
 		);
 
@@ -56,11 +61,28 @@ abstract class FormValidator {
 	/**
 	 * @return array
 	 */
-	public function getValidationRules($context = null)
+	public function getValidationRules()
 	{
-		if( ! is_null($context) && array_key_exists($context, $this->rules)) return $this->rules[$context];
+		if( ! is_null($this->context) && array_key_exists($this->context, $this->rules)) return $this->rules[$this->context];
 		
 		return $this->rules;
+	}
+
+	/**
+	 * @return FormValidator
+	 */
+	public function setContext($context)
+	{
+		$this->context = $context;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getContext()
+	{
+		return $this->context;
 	}
 
 	/**
