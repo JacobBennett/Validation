@@ -103,3 +103,30 @@ Now, just inject this object into your controller or application service, and ca
 ```php
 $this->registrationForm->validate(Input::all());
 ```
+
+## Optional
+
+You can also create a set of nested rules like this:
+
+```php
+	/**
+	 * Validation rules for registering
+	 *
+	 * @var array
+	 */
+	protected $rules = [
+		'store' => [
+			'username' => 'required',
+			'email'    => 'required|unique:users',
+		],
+		'update' => [
+			'username' => 'required',
+		]
+	];
+```
+
+To call the set of rules you want to use, simply set a context on the validator before calling `validate()`
+
+```php
+	$this->registrationForm->setContext('store')->validate(Input::all());
+```
